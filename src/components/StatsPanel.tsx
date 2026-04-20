@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { BarChart3, CheckCircle2, Circle } from 'lucide-react';
+import { motion } from "framer-motion";
+import { BarChart3, CheckCircle2, Circle, LucideIcon } from "lucide-react";
 
 interface StatsPanelProps {
   stats: {
@@ -10,9 +10,79 @@ interface StatsPanelProps {
   };
 }
 
+interface StatCardProps {
+  icon: LucideIcon;
+  label: string;
+  value: number;
+  color: "cyan" | "magenta" | "green";
+  delay: number;
+  showPulse?: boolean;
+}
+
+// Individual stat card component
+const StatCard = ({
+  icon: Icon,
+  label,
+  value,
+  color,
+  delay,
+  showPulse,
+}: StatCardProps) => {
+  const colorClasses = {
+    cyan: {
+      border: "border-cyan/30",
+      bg: "bg-cyan/5",
+      text: "text-cyan",
+      textMuted: "text-cyan/80",
+    },
+    magenta: {
+      border: "border-magenta/30",
+      bg: "bg-magenta/5",
+      text: "text-magenta",
+      textMuted: "text-magenta/80",
+    },
+    green: {
+      border: "border-green/30",
+      bg: "bg-green/5",
+      text: "text-green",
+      textMuted: "text-green/80",
+    },
+  };
+  const classes = colorClasses[color];
+
+  return (
+    <div
+      className={`relative p-4 border ${classes.border} ${classes.bg} rounded`}
+    >
+      <div className="flex items-center gap-2 mb-2">
+        <Icon className={`w-4 h-4 ${classes.text}`} />
+        <span className={`text-xs ${classes.textMuted}`}>{label}</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay }}
+          className={`text-3xl font-bold ${classes.text}`}
+        >
+          {value}
+        </motion.div>
+        {/* Pulsing indicator for active operations */}
+        {showPulse && value > 0 && (
+          <motion.div
+            animate={{ scale: [1, 1.3, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className={`w-2 h-2 rounded-full bg-${color} shadow-neon-${color}`}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
 const StatsPanel = ({ stats }: StatsPanelProps) => {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
@@ -26,69 +96,36 @@ const StatsPanel = ({ stats }: StatsPanelProps) => {
 
       {/* Stats cards row */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        {/* Total Directives */}
-        <div className="relative p-4 border border-cyan/30 bg-cyan/5 rounded">
-          <div className="flex items-center gap-2 mb-2">
-            <BarChart3 className="w-4 h-4 text-cyan" />
-            <span className="text-xs text-cyan/80">TOTAL DIRECTIVES</span>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-3xl font-bold text-cyan"
-          >
-            {stats.total}
-          </motion.div>
-        </div>
-
-        {/* Active Ops */}
-        <div className="relative p-4 border border-magenta/30 bg-magenta/5 rounded">
-          <div className="flex items-center gap-2 mb-2">
-            <Circle className="w-4 h-4 text-magenta" />
-            <span className="text-xs text-magenta/80">ACTIVE OPS</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-3xl font-bold text-magenta"
-            >
-              {stats.active}
-            </motion.div>
-            {stats.active > 0 && (
-              <motion.div
-                animate={{ scale: [1, 1.3, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="w-2 h-2 rounded-full bg-magenta shadow-neon-magenta"
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Completed Ops */}
-        <div className="relative p-4 border border-green/30 bg-green/5 rounded">
-          <div className="flex items-center gap-2 mb-2">
-            <CheckCircle2 className="w-4 h-4 text-green" />
-            <span className="text-xs text-green/80">COMPLETED OPS</span>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-3xl font-bold text-green"
-          >
-            {stats.completed}
-          </motion.div>
-        </div>
+        <StatCard
+          icon={BarChart3}
+          label="TOTAL DIRECTIVES"
+          value={stats.total}
+          color="cyan"
+          delay={0.3}
+        />
+        <StatCard
+          icon={Circle}
+          label="ACTIVE OPS"
+          value={stats.active}
+          color="magenta"
+          delay={0.4}
+          showPulse
+        />
+        <StatCard
+          icon={CheckCircle2}
+          label="COMPLETED OPS"
+          value={stats.completed}
+          color="green"
+          delay={0.5}
+        />
       </div>
 
       {/* Progress bar section */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-xs">
           <span className="text-cyan">COMPLETION RATE</span>
-          <motion.span 
+          {/* Animate percentage change using key prop to trigger re-mount */}
+          <motion.span
             key={stats.completionRate}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -98,25 +135,24 @@ const StatsPanel = ({ stats }: StatsPanelProps) => {
           </motion.span>
         </div>
 
-        {/* Progress bar track */}
         <div className="relative h-4 bg-cyber-black border border-cyan/30 rounded-full overflow-hidden">
-          {/* Progress bar fill */}
+          {/* Animated progress fill - transitions from cyan to green as completion increases */}
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${stats.completionRate}%` }}
-            transition={{ duration: 1, delay: 0.6, ease: 'easeOut' }}
+            transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
             className="h-full bg-gradient-to-r from-cyan via-green to-green progress-bar-neon rounded-full"
           />
 
-          {/* Animated shimmer effect */}
+          {/* Continuous shimmer effect for visual interest */}
           <motion.div
             animate={{
-              x: ['-100%', '200%']
+              x: ["-100%", "200%"],
             }}
             transition={{
               duration: 2,
               repeat: Infinity,
-              ease: 'linear'
+              ease: "linear",
             }}
             className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-transparent via-white/20 to-transparent"
           />

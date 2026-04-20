@@ -1,21 +1,33 @@
-import { motion } from 'framer-motion';
-import { Filter } from 'lucide-react';
+import { motion } from "framer-motion";
+import { Filter } from "lucide-react";
+
+type FilterType = "all" | "active" | "completed";
 
 interface FilterTabsProps {
-  activeFilter: 'all' | 'active' | 'completed';
-  onFilterChange: (filter: 'all' | 'active' | 'completed') => void;
+  activeFilter: FilterType;
+  onFilterChange: (filter: FilterType) => void;
   counts: { all: number; active: number; completed: number };
 }
 
-const FilterTabs = ({ activeFilter, onFilterChange, counts }: FilterTabsProps) => {
-  const filters: Array<{ id: 'all' | 'active' | 'completed'; label: string }> = [
-    { id: 'all', label: 'ALL_DIRECTIVES' },
-    { id: 'active', label: 'ACTIVE' },
-    { id: 'completed', label: 'COMPLETED' }
-  ];
+interface FilterConfig {
+  id: FilterType;
+  label: string;
+}
 
+// Filter tab configuration
+const FILTER_CONFIGS: FilterConfig[] = [
+  { id: "all", label: "ALL_DIRECTIVES" },
+  { id: "active", label: "ACTIVE" },
+  { id: "completed", label: "COMPLETED" },
+];
+
+const FilterTabs = ({
+  activeFilter,
+  onFilterChange,
+  counts,
+}: FilterTabsProps) => {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -35,10 +47,10 @@ const FilterTabs = ({ activeFilter, onFilterChange, counts }: FilterTabsProps) =
 
       {/* Filter buttons */}
       <div className="relative flex gap-2">
-        {filters.map((filter) => {
+        {FILTER_CONFIGS.map((filter) => {
           const isActive = activeFilter === filter.id;
           const count = counts[filter.id];
-          
+
           return (
             <motion.button
               key={filter.id}
@@ -46,33 +58,35 @@ const FilterTabs = ({ activeFilter, onFilterChange, counts }: FilterTabsProps) =
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className={`relative flex-1 px-4 py-2 border rounded transition-all duration-300 ${
-                isActive 
-                  ? 'border-cyan bg-cyan/10 shadow-neon text-cyan' 
-                  : 'border-magenta/50 bg-cyber-black text-magenta hover:border-yellow hover:text-yellow'
+                isActive
+                  ? "border-cyan bg-cyan/10 shadow-neon text-cyan"
+                  : "border-magenta/50 bg-cyber-black text-magenta hover:border-yellow hover:text-yellow"
               }`}
             >
-              {/* Active indicator background */}
+              {/* Active state background with shared layout animation */}
               {isActive && (
                 <motion.div
                   layoutId="activeTab"
                   className="absolute inset-0 bg-cyan/5 rounded"
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
 
-              {/* Content */}
+              {/* Label and count badge */}
               <div className="relative flex items-center justify-center gap-2">
                 <span className="text-xs font-bold">{filter.label}</span>
-                <span className={`px-1.5 py-0.5 text-xs rounded border ${
-                  isActive 
-                    ? 'border-cyan bg-cyan/20 text-cyan' 
-                    : 'border-magenta/50 bg-magenta/10 text-magenta'
-                }`}>
+                <span
+                  className={`px-1.5 py-0.5 text-xs rounded border ${
+                    isActive
+                      ? "border-cyan bg-cyan/20 text-cyan"
+                      : "border-magenta/50 bg-magenta/10 text-magenta"
+                  }`}
+                >
                   {count}
                 </span>
               </div>
 
-              {/* Bottom glow line for active tab */}
+              {/* Active state bottom glow */}
               {isActive && (
                 <motion.div
                   initial={{ scaleX: 0 }}
