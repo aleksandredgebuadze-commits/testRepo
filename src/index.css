@@ -176,3 +176,9 @@ body {
 .pulse {
   animation: pulse 2s ease-in-out infinite;
 }
+
+/* Neon progress bar */
+.progress-bar-neon {
+  box-shadow: 0 0 8px rgba(0, 255, 248, 0.6), 0 0 16px rgba(0, 255, 65, 0.3);
+  transition: width 0.5s ease-out;
+}
