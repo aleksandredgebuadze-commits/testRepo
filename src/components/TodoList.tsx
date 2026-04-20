@@ -4,6 +4,7 @@ interface TodoItem {
   id: number;
   text: string;
   completed: boolean;
+  status?: 'unknown';
 }
 
 interface TodoListProps {
@@ -92,9 +93,9 @@ const TodoList = ({ todos, onToggle, onDelete }: TodoListProps) => {
               {/* Status indicator */}
               <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs">
                 <span
-                  className={todo.completed ? "text-green" : "text-magenta"}
+                  className={todo.status === 'unknown' ? "text-yellow" : (todo.completed ? "text-green" : "text-magenta")}
                 >
-                  {todo.completed ? "[DONE]" : "[PENDING]"}
+                  {todo.status === 'unknown' ? "[UNKNOWN]" : (todo.completed ? "[DONE]" : "[PENDING]")}
                 </span>
               </div>
             </motion.div>

@@ -5,27 +5,31 @@ import TodoList from "./components/TodoList";
 import FilterTabs from "./components/FilterTabs";
 import StatsPanel from "./components/StatsPanel";
 
-type Todo = { id: number; text: string; completed: boolean };
-type FilterType = "all" | "active" | "completed";
+type Todo = { id: number; text: string; completed: boolean; status?: 'unknown' };
+type FilterType = "all" | "active" | "completed" | "unknown";
 
 // Filter todos by completion status
 const applyFilter = (todos: Todo[], filter: FilterType): Todo[] => {
-  if (filter === "active") return todos.filter((t) => !t.completed);
-  if (filter === "completed") return todos.filter((t) => t.completed);
+  if (filter === "active") return todos.filter((t) => !t.completed && !t.status);
+  if (filter === "completed") return todos.filter((t) => t.completed && !t.status);
+  if (filter === "unknown") return todos.filter((t) => t.status === "unknown");
   return todos;
 };
 
 // Calculate stats from todo list
 const calculateStats = (todos: Todo[]) => {
-  const completed = todos.filter((t) => t.completed).length;
-  const active = todos.length - completed;
+  const unknown = todos.filter((t) => t.status === "unknown").length;
+  const completed = todos.filter((t) => t.completed && !t.status).length;
+  const active = todos.filter((t) => !t.completed && !t.status).length;
+  const totalKnown = active + completed;
   const completionRate =
-    todos.length > 0 ? Math.round((completed / todos.length) * 100) : 0;
+    totalKnown > 0 ? Math.round((completed / totalKnown) * 100) : 0;
 
   return {
     total: todos.length,
     active,
     completed,
+    unknown,
     completionRate,
   };
 };
@@ -67,6 +71,7 @@ function App() {
           all: stats.total,
           active: stats.active,
           completed: stats.completed,
+          unknown: stats.unknown,
         }}
       />
       <TodoList

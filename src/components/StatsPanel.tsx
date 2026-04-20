@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { BarChart3, CheckCircle2, Circle, LucideIcon } from "lucide-react";
+import { BarChart3, CheckCircle2, Circle, HelpCircle, LucideIcon } from "lucide-react";
 
 interface StatsPanelProps {
   stats: {
     total: number;
     active: number;
     completed: number;
+    unknown: number;
     completionRate: number;
   };
 }
@@ -14,7 +15,7 @@ interface StatCardProps {
   icon: LucideIcon;
   label: string;
   value: number;
-  color: "cyan" | "magenta" | "green";
+  color: "cyan" | "magenta" | "green" | "yellow";
   delay: number;
   showPulse?: boolean;
 }
@@ -46,6 +47,12 @@ const StatCard = ({
       bg: "bg-green/5",
       text: "text-green",
       textMuted: "text-green/80",
+    },
+    yellow: {
+      border: "border-yellow/30",
+      bg: "bg-yellow/5",
+      text: "text-yellow",
+      textMuted: "text-yellow/80",
     },
   };
   const classes = colorClasses[color];
@@ -95,7 +102,7 @@ const StatsPanel = ({ stats }: StatsPanelProps) => {
       <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan" />
 
       {/* Stats cards row */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-4 gap-4 mb-6">
         <StatCard
           icon={BarChart3}
           label="TOTAL DIRECTIVES"
@@ -112,11 +119,18 @@ const StatsPanel = ({ stats }: StatsPanelProps) => {
           showPulse
         />
         <StatCard
+          icon={HelpCircle}
+          label="UNKNOWN"
+          value={stats.unknown}
+          color="yellow"
+          delay={0.5}
+        />
+        <StatCard
           icon={CheckCircle2}
           label="COMPLETED OPS"
           value={stats.completed}
           color="green"
-          delay={0.5}
+          delay={0.6}
         />
       </div>
 

@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { Filter } from "lucide-react";
 
-type FilterType = "all" | "active" | "completed";
+type FilterType = "all" | "active" | "completed" | "unknown";
 
 interface FilterTabsProps {
   activeFilter: FilterType;
   onFilterChange: (filter: FilterType) => void;
-  counts: { all: number; active: number; completed: number };
+  counts: { all: number; active: number; completed: number; unknown: number };
 }
 
 interface FilterConfig {
@@ -19,6 +19,7 @@ const FILTER_CONFIGS: FilterConfig[] = [
   { id: "all", label: "ALL_DIRECTIVES" },
   { id: "active", label: "ACTIVE" },
   { id: "completed", label: "COMPLETED" },
+  { id: "unknown", label: "UNKNOWN" },
 ];
 
 const FilterTabs = ({
