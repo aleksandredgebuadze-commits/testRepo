@@ -75,8 +75,7 @@ const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
 
                {/* Status indicator */}
                <div className="absolute right-2 top-6 -translate-y-1/2 text-xs">
-                 <span className={todo.completed ? 'text-green' : 'text-magenta'} 
-                       className="mr-1">
+                 <span className={`mr-1 ${todo.completed ? 'text-green' : 'text-magenta'}`}>
                    {todo.completed ? '[DONE]' : '[PENDING]'}
                  </span>
                </div>
