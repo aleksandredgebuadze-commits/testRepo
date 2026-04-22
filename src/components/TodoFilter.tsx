@@ -1,19 +1,19 @@
-import { motion } from 'framer-motion';
-
-type FilterType = 'all' | 'active' | 'completed';
+import { motion } from "framer-motion";
+import type { FilterType } from "../types";
 
 interface TodoFilterProps {
   currentFilter: FilterType;
   onFilterChange: (filter: FilterType) => void;
 }
 
-const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
-  const filters: { label: string; value: FilterType }[] = [
-    { label: 'ALL', value: 'all' },
-    { label: 'ACTIVE', value: 'active' },
-    { label: 'COMPLETED', value: 'completed' },
-  ];
+// Filter options displayed in the UI
+const FILTER_OPTIONS: { label: string; value: FilterType }[] = [
+  { label: "ALL", value: "all" },
+  { label: "ACTIVE", value: "active" },
+  { label: "COMPLETED", value: "completed" },
+];
 
+const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
   return (
     <motion.div
       id="filterElem"
@@ -37,7 +37,7 @@ const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
 
         {/* Filter buttons */}
         <div className="flex gap-3">
-          {filters.map(({ label, value }) => (
+          {FILTER_OPTIONS.map(({ label, value }) => (
             <motion.button
               key={value}
               onClick={() => onFilterChange(value)}
@@ -45,8 +45,8 @@ const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
               whileTap={{ scale: 0.95 }}
               className={`flex-1 px-4 py-2 border rounded transition-all duration-300 font-mono text-sm ${
                 currentFilter === value
-                  ? 'bg-magenta border-magenta text-black shadow-neon-magenta'
-                  : 'bg-cyber-black border-cyan text-cyan hover:border-yellow hover:text-yellow'
+                  ? "bg-magenta border-magenta text-black shadow-neon-magenta"
+                  : "bg-cyber-black border-cyan text-cyan hover:border-yellow hover:text-yellow"
               }`}
             >
               {label}
