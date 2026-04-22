@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 interface TodoItem {
   id: number;
   text: string;
@@ -16,7 +16,7 @@ const TodoList = ({ todos, onToggle, onDelete }: TodoListProps) => {
   return (
     <AnimatePresence>
       {todos.length === 0 ? (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -27,16 +27,18 @@ const TodoList = ({ todos, onToggle, onDelete }: TodoListProps) => {
         </motion.div>
       ) : (
         <div className="space-y-3">
-           {todos.map((todo, index) => (
-             <motion.div
-               key={todo.id}
-               initial={{ opacity: 0, x: -20 }}
-               animate={{ opacity: 1, x: 0 }}
-               exit={{ opacity: 0, scale: 0.9 }}
-               transition={{ duration: 0.3, delay: index * 0.1 }}
-               className={`p-4 border rounded-lg transition-all duration-300 slide-up ${todo.completed 
-                 ? 'border-green/50 bg-cyber-black' 
-                 : 'border-magenta bg-cyber-dark shadow-neon-magenta'}`}
+          {todos.map((todo, index) => (
+            <motion.div
+              key={todo.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className={`p-4 border rounded-lg transition-all duration-300 slide-up ${
+                todo.completed
+                  ? "border-green/50 bg-cyber-black"
+                  : "border-magenta bg-cyber-dark shadow-neon-magenta"
+              }`}
             >
               {/* Decorative corners */}
               <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-current" />
@@ -51,26 +53,26 @@ const TodoList = ({ todos, onToggle, onDelete }: TodoListProps) => {
                   onClick={() => onToggle(todo.id)}
                   whileTap={{ scale: 0.9 }}
                   className={`absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 border rounded transition-all duration-300 ${
-                    todo.completed 
-                      ? 'bg-green border-green shadow-neon' 
-                      : 'border-magenta hover:border-yellow'
+                    todo.completed
+                      ? "bg-green border-green shadow-neon"
+                      : "border-magenta hover:border-yellow"
                   }`}
                 >
                   {todo.completed && (
-                    <motion.div 
+                    <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="w-3 h-3 bg-green rounded-sm" 
+                      className="w-3 h-3 bg-green rounded-sm"
                     />
                   )}
                 </motion.button>
 
                 {/* Text */}
-                <span 
+                <span
                   className={`block pl-8 pr-2 py-1 font-mono text-sm transition-all duration-300 ${
-                    todo.completed 
-                      ? 'text-green/50 line-through decoration-2' 
-                      : 'text-cyan'
+                    todo.completed
+                      ? "text-green/50 line-through decoration-2"
+                      : "text-cyan"
                   }`}
                 >
                   {todo.text}
@@ -89,8 +91,10 @@ const TodoList = ({ todos, onToggle, onDelete }: TodoListProps) => {
 
               {/* Status indicator */}
               <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs">
-                <span className={todo.completed ? 'text-green' : 'text-magenta'}>
-                  {todo.completed ? '[DONE]' : '[PENDING]'}
+                <span
+                  className={todo.completed ? "text-green" : "text-magenta"}
+                >
+                  {todo.completed ? "[DONE]" : "[PENDING]"}
                 </span>
               </div>
             </motion.div>

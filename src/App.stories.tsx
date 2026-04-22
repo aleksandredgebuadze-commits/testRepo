@@ -1,16 +1,21 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import Header from "./components/Header";
 import TodoInput from "./components/TodoInput";
 import TodoFilter from "./components/TodoFilter";
 import TodoList from "./components/TodoList";
+import type { Todo } from "./App";
 
 type FilterType = "all" | "active" | "completed";
 
-export interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+// Initial demo todos for storybook showcase
+const INITIAL_TODOS: Todo[] = [
+  { id: 1, text: "Hack the mainframe", completed: true },
+  { id: 2, text: "Install neural implants", completed: false },
+  { id: 3, text: "Upgrade cyberdeck", completed: true },
+  { id: 4, text: "Meet contact at the neon bar", completed: false },
+  { id: 5, text: "Decrypt corp data files", completed: false },
+];
 
 // Filter todos based on the selected filter type
 const getFilteredTodos = (todos: Todo[], filter: FilterType): Todo[] => {
@@ -19,9 +24,10 @@ const getFilteredTodos = (todos: Todo[], filter: FilterType): Todo[] => {
   return todos;
 };
 
-function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [nextId, setNextId] = useState(1);
+// Wrapper component to handle state with pre-populated todos
+const AppWithPrePopulatedTodos = () => {
+  const [todos, setTodos] = useState<Todo[]>(INITIAL_TODOS);
+  const [nextId, setNextId] = useState(6);
   const [filter, setFilter] = useState<FilterType>("all");
 
   const addTodo = (text: string) => {
@@ -41,7 +47,6 @@ function App() {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  // Apply current filter to todo list
   const filteredTodos = getFilteredTodos(todos, filter);
 
   return (
@@ -56,6 +61,21 @@ function App() {
       />
     </div>
   );
-}
+};
 
-export default App;
+const meta: Meta = {
+  title: "App",
+  component: AppWithPrePopulatedTodos,
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export default meta;
+type Story = StoryObj;
+
+export const Default: Story = {};
+
+export const WithFilterDemo: Story = {
+  name: "With Pre-populated Todos",
+};

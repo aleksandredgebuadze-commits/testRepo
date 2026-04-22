@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Plus } from 'lucide-react';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Plus } from "lucide-react";
 
 interface TodoInputProps {
   onAdd: (text: string) => void;
 }
 
 const TodoInput = ({ onAdd }: TodoInputProps) => {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
       onAdd(input);
-      setInput('');
+      setInput("");
     }
   };
 
   return (
-    <motion.form 
+    <motion.form
       onSubmit={handleSubmit}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -43,7 +43,7 @@ const TodoInput = ({ onAdd }: TodoInputProps) => {
             placeholder="ENTER NEW DIRECTIVE..."
             className="w-full px-4 py-3 bg-cyber-black border border-magenta rounded text-magenta placeholder-text-muted focus:outline-none focus:border-yellow transition-colors duration-300 font-mono text-sm"
             style={{
-              boxShadow: 'inset 0 0 10px rgba(249, 42, 173, 0.2)'
+              boxShadow: "inset 0 0 10px rgba(249, 42, 173, 0.2)",
             }}
           />
 
@@ -55,7 +55,10 @@ const TodoInput = ({ onAdd }: TodoInputProps) => {
           {/* Submit button */}
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(255, 255, 0, 0.6)' }}
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 0 20px rgba(255, 255, 0, 0.6)",
+            }}
             whileTap={{ scale: 0.95 }}
             className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-3 bg-gradient-to-r from-cyan to-blue-500 border border-cyan rounded text-white font-bold hover:shadow-neon transition-all duration-300 flex items-center gap-2"
           >
