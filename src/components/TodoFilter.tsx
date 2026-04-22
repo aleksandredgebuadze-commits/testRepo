@@ -1,17 +1,32 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+
+type FilterType = "all" | "active" | "completed";
 
 interface TodoFilterProps {
-  currentFilter: 'all' | 'active' | 'completed';
-  onFilterChange: (filter: 'all' | 'active' | 'completed') => void;
+  currentFilter: FilterType;
+  onFilterChange: (filter: FilterType) => void;
 }
 
-const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
-  const filters: Array<{ value: 'all' | 'active' | 'completed'; label: string }> = [
-    { value: 'all', label: 'ALL' },
-    { value: 'active', label: 'ACTIVE' },
-    { value: 'completed', label: 'COMPLETED' }
-  ];
+// Available filter options for the todo list
+const FILTER_OPTIONS: Array<{ value: FilterType; label: string }> = [
+  { value: "all", label: "ALL" },
+  { value: "active", label: "ACTIVE" },
+  { value: "completed", label: "COMPLETED" },
+];
 
+// Generate className for filter button based on active state
+const getFilterButtonStyles = (isActive: boolean): string => {
+  const baseStyles =
+    "flex-1 px-4 py-2 font-mono text-sm font-bold rounded border transition-all duration-300";
+  const activeStyles =
+    "bg-gradient-to-r from-cyan to-blue-500 border-cyan text-white shadow-neon";
+  const inactiveStyles =
+    "bg-cyber-black border-magenta text-magenta hover:border-yellow hover:text-yellow";
+
+  return `${baseStyles} ${isActive ? activeStyles : inactiveStyles}`;
+};
+
+const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
   return (
     <div id="filterElem" className="relative mb-6">
       {/* Container with cyberpunk border styling */}
@@ -24,22 +39,20 @@ const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
 
         {/* Filter label */}
         <div className="mb-3">
-          <span className="text-magenta font-mono text-xs tracking-wider">FILTER MODE:</span>
+          <span className="text-magenta font-mono text-xs tracking-wider">
+            FILTER MODE:
+          </span>
         </div>
 
         {/* Filter buttons */}
         <div className="flex gap-3">
-          {filters.map((filter) => (
+          {FILTER_OPTIONS.map((filter) => (
             <motion.button
               key={filter.value}
               onClick={() => onFilterChange(filter.value)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`flex-1 px-4 py-2 font-mono text-sm font-bold rounded border transition-all duration-300 ${
-                currentFilter === filter.value
-                  ? 'bg-gradient-to-r from-cyan to-blue-500 border-cyan text-white shadow-neon'
-                  : 'bg-cyber-black border-magenta text-magenta hover:border-yellow hover:text-yellow'
-              }`}
+              className={getFilterButtonStyles(currentFilter === filter.value)}
             >
               {filter.label}
             </motion.button>
