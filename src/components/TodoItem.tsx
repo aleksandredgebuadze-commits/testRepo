@@ -51,35 +51,34 @@ const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
           )}
         </motion.button>
 
-                 {/* Text */}
-                 <span 
-                   className={`block pl-10 pr-2 py-1 font-mono text-sm transition-all duration-300 ${
-                     todo.completed 
-                       ? 'text-green/50 line-through decoration-2' 
-                       : 'text-cyan'
-                   }`}
-                 >
-                   {todo.text}
-                 </span>
+        {/* Text */}
+        <span 
+          className={`block pl-10 pr-2 py-1 font-mono text-sm transition-all duration-300 ${
+            todo.completed 
+              ? 'text-green/50 line-through decoration-2' 
+              : 'text-cyan'
+          }`}
+        >
+          {todo.text}
+        </span>
 
-                 {/* Delete button */}
-                 <motion.button
-                   onClick={() => onDelete(todo.id)}
-                   whileHover={{ scale: 1.2, rotate: -5 }}
-                   whileTap={{ scale: 0.9 }}
-                   className="absolute right-2 top-3 -translate-y-1/2 p-2 text-magenta hover:text-yellow transition-colors duration-300 mr-1"
-                 >
-                   <Trash2 className="w-4 h-4" />
-                 </motion.button>
+        {/* Delete button */}
+        <motion.button
+          onClick={() => onDelete(todo.id)}
+          whileHover={{ scale: 1.2, rotate: -5 }}
+          whileTap={{ scale: 0.9 }}
+          className="absolute right-2 top-3 -translate-y-1/2 p-2 text-magenta hover:text-yellow transition-colors duration-300 mr-1"
+        >
+          <Trash2 className="w-4 h-4" />
+        </motion.button>
       </div>
 
-               {/* Status indicator */}
-               <div className="absolute right-2 top-6 -translate-y-1/2 text-xs">
-                 <span className={todo.completed ? 'text-green' : 'text-magenta'} 
-                       className="mr-1">
-                   {todo.completed ? '[DONE]' : '[PENDING]'}
-                 </span>
-               </div>
+      {/* Status indicator */}
+      <div className="absolute right-2 top-6 -translate-y-1/2 text-xs">
+        <span className={`mr-1 ${todo.completed ? 'text-green' : 'text-magenta'}`}>
+          {todo.completed ? '[DONE]' : '[PENDING]'}
+        </span>
+      </div>
 
       {/* Progress bar */}
       {!todo.completed && (
