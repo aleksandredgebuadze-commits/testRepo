@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import App from './App';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import App from "./App";
 
 const meta: Meta<typeof App> = {
-  title: 'Pages/App',
+  title: "Pages/App",
   component: App,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
 };
 

@@ -1,19 +1,20 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
-export type FilterType = 'all' | 'active' | 'completed';
+export type FilterType = "all" | "active" | "completed";
 
 interface TodoFilterProps {
   currentFilter: FilterType;
   onFilterChange: (filter: FilterType) => void;
 }
 
-const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
-  const filters: { value: FilterType; label: string }[] = [
-    { value: 'all', label: 'ALL' },
-    { value: 'active', label: 'ACTIVE' },
-    { value: 'completed', label: 'COMPLETED' }
-  ];
+// Available filter options - order determines display sequence from left to right
+const FILTER_OPTIONS: { value: FilterType; label: string }[] = [
+  { value: "all", label: "ALL" },
+  { value: "active", label: "ACTIVE" },
+  { value: "completed", label: "COMPLETED" },
+];
 
+const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
   return (
     <motion.div
       id="filterElem"
@@ -33,19 +34,20 @@ const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
         <div className="mb-3">
           <span className="text-magenta text-xs font-bold">FILTER MODE:</span>
         </div>
-        
+
         {/* Filter buttons */}
         <div className="flex gap-3">
-          {filters.map((filter) => (
+          {FILTER_OPTIONS.map((filter) => (
             <motion.button
               key={filter.value}
               onClick={() => onFilterChange(filter.value)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`px-4 py-2 border rounded transition-all duration-300 font-mono text-sm ${
+                // Active filter highlighted with yellow to stand out from the magenta theme
                 currentFilter === filter.value
-                  ? 'border-yellow bg-yellow/10 text-yellow shadow-neon'
-                  : 'border-magenta bg-cyber-black text-cyan hover:border-yellow hover:text-yellow'
+                  ? "border-yellow bg-yellow/10 text-yellow shadow-neon"
+                  : "border-magenta bg-cyber-black text-cyan hover:border-yellow hover:text-yellow"
               }`}
             >
               {filter.label}
