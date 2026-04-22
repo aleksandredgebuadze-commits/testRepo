@@ -1,20 +1,23 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useMemo, useState } from "react";
 import Header from "./components/Header";
 import TodoInput from "./components/TodoInput";
 import TodoFilter from "./components/TodoFilter";
 import TodoList from "./components/TodoList";
-
-export type Todo = {
-  id: number;
-  text: string;
-  completed: boolean;
-};
+import type { Todo } from "./App";
 
 type FilterType = "all" | "active" | "completed";
 
-const App = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [nextId, setNextId] = useState(1);
+// Wrapper component to demonstrate filtering functionality with pre-populated data
+const AppWithPrePopulatedTodos = () => {
+  const [todos, setTodos] = useState<Todo[]>([
+    { id: 1, text: "Upgrade neural interface", completed: true },
+    { id: 2, text: "Hack the mainframe", completed: false },
+    { id: 3, text: "Install cybernetic enhancements", completed: true },
+    { id: 4, text: "Decrypt encrypted files", completed: false },
+    { id: 5, text: "Run diagnostic scan", completed: false },
+  ]);
+  const [nextId, setNextId] = useState(6);
   const [filter, setFilter] = useState<FilterType>("all");
 
   const addTodo = (text: string) => {
@@ -34,8 +37,6 @@ const App = () => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  // Filter todos based on completion status
-  // 'active' shows only incomplete, 'completed' shows only complete, 'all' shows everything
   const filteredTodos = useMemo(() => {
     if (filter === "active") {
       return todos.filter((todo) => !todo.completed);
@@ -62,4 +63,15 @@ const App = () => {
   );
 };
 
-export default App;
+const meta: Meta<typeof AppWithPrePopulatedTodos> = {
+  title: "App",
+  component: AppWithPrePopulatedTodos,
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof AppWithPrePopulatedTodos>;
+
+export const WithFilterDemo: Story = {};
