@@ -1,16 +1,15 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import type { FilterType } from "../App";
 
-export type FilterType = "all" | "active" | "completed";
-
-interface TodoItem {
+interface TodoItemType {
   id: number;
   text: string;
   completed: boolean;
 }
 
 interface TodoListProps {
-  todos: TodoItem[];
+  todos: TodoItemType[];
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
   filter: FilterType;
@@ -32,7 +31,11 @@ const TodoList = ({
 }: TodoListProps) => {
   return (
     <>
-      {/* Filter bar - cyberpunk themed buttons to filter between all/active/completed todos */}
+      {/*
+       * Filter bar - cyberpunk themed buttons to filter between all/active/completed todos.
+       * Always visible regardless of whether todos exist - allows users to understand the available
+       * filter options and see which filter is currently active.
+       */}
       <motion.div
         id="filterElem"
         initial={{ opacity: 0, y: -10 }}
@@ -75,6 +78,7 @@ const TodoList = ({
       </motion.div>
 
       <AnimatePresence>
+        {/* Show empty state when no todos match the current filter */}
         {todos.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -87,6 +91,7 @@ const TodoList = ({
           </motion.div>
         ) : (
           <div className="space-y-3">
+            {/* Stagger animation delay based on index for cascading reveal effect */}
             {todos.map((todo, index) => (
               <motion.div
                 key={todo.id}
@@ -149,7 +154,10 @@ const TodoList = ({
                   </motion.button>
                 </div>
 
-                {/* Status indicator */}
+                {/*
+                 * Status indicator overlaps with delete button in the same position.
+                 * Delete button has z-index priority and is interactive, status label renders behind it.
+                 */}
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs">
                   <span
                     className={todo.completed ? "text-green" : "text-magenta"}

@@ -17,7 +17,7 @@ export type Todo = {
  * - 'completed': shows only completed todos
  * - 'all': shows all todos
  */
-const getFilteredTodos = (todos: Todo[], filter: FilterType): Todo[] => {
+export const getFilteredTodos = (todos: Todo[], filter: FilterType): Todo[] => {
   if (filter === "active") return todos.filter((todo) => !todo.completed);
   if (filter === "completed") return todos.filter((todo) => todo.completed);
   return todos;

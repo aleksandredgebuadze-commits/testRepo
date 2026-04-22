@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
 import type { FilterType, Todo } from "./App";
+import { getFilteredTodos } from "./App";
 
 interface AppWithTodosProps {
   initialTodos?: Todo[];
@@ -39,11 +40,7 @@ const AppWithTodos = ({ initialTodos = [] }: AppWithTodosProps) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  const filteredTodos = todos.filter((todo) => {
-    if (filter === "active") return !todo.completed;
-    if (filter === "completed") return todo.completed;
-    return true;
-  });
+  const filteredTodos = getFilteredTodos(todos, filter);
 
   return (
     <div className="min-h-screen bg-black text-cyan-400 font-mono p-6">
