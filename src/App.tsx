@@ -4,10 +4,15 @@ import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
 import TodoFilter, { FilterType } from "./components/TodoFilter";
 
+// Represents a single todo item with unique ID, text content, and completion state
+type Todo = {
+  id: number;
+  text: string;
+  completed: boolean;
+};
+
 function App() {
-  const [todos, setTodos] = useState<
-    { id: number; text: string; completed: boolean }[]
-  >([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [nextId, setNextId] = useState(1);
   const [filter, setFilter] = useState<FilterType>("all");
 
@@ -29,15 +34,17 @@ function App() {
   };
 
   // Memoized filtering to avoid recalculating on every render
-  // Returns todos based on current filter: active (incomplete), completed, or all
+  // Filter modes: 'active' shows incomplete todos, 'completed' shows finished todos, 'all' shows everything
   const filteredTodos = useMemo(() => {
-    if (filter === "active") {
-      return todos.filter((todo) => !todo.completed);
+    switch (filter) {
+      case "active":
+        return todos.filter((todo) => !todo.completed);
+      case "completed":
+        return todos.filter((todo) => todo.completed);
+      case "all":
+      default:
+        return todos;
     }
-    if (filter === "completed") {
-      return todos.filter((todo) => todo.completed);
-    }
-    return todos;
   }, [todos, filter]);
 
   return (

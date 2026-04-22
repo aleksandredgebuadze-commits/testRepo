@@ -14,6 +14,27 @@ const FILTER_OPTIONS: { value: FilterType; label: string }[] = [
   { value: "completed", label: "COMPLETED" },
 ];
 
+// Decorative cyberpunk-style corner brackets
+const DecorativeCorners = () => (
+  <>
+    <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan" />
+    <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyan" />
+    <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyan" />
+    <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan" />
+  </>
+);
+
+// Returns appropriate button styles based on whether the filter is active
+// Active filter uses yellow highlight to stand out from the magenta theme
+const getFilterButtonStyles = (isActive: boolean): string => {
+  const baseStyles =
+    "px-4 py-2 border rounded transition-all duration-300 font-mono text-sm";
+  const activeStyles = "border-yellow bg-yellow/10 text-yellow shadow-neon";
+  const inactiveStyles =
+    "border-magenta bg-cyber-black text-cyan hover:border-yellow hover:text-yellow";
+  return `${baseStyles} ${isActive ? activeStyles : inactiveStyles}`;
+};
+
 const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
   return (
     <motion.div
@@ -23,11 +44,7 @@ const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
       transition={{ duration: 0.3 }}
       className="relative mb-6 p-4 border border-cyan bg-cyber-dark rounded-lg shadow-neon"
     >
-      {/* Decorative corners */}
-      <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan" />
-      <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyan" />
-      <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyan" />
-      <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan" />
+      <DecorativeCorners />
 
       {/* Filter section */}
       <div className="relative">
@@ -43,12 +60,7 @@ const TodoFilter = ({ currentFilter, onFilterChange }: TodoFilterProps) => {
               onClick={() => onFilterChange(filter.value)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 border rounded transition-all duration-300 font-mono text-sm ${
-                // Active filter highlighted with yellow to stand out from the magenta theme
-                currentFilter === filter.value
-                  ? "border-yellow bg-yellow/10 text-yellow shadow-neon"
-                  : "border-magenta bg-cyber-black text-cyan hover:border-yellow hover:text-yellow"
-              }`}
+              className={getFilterButtonStyles(currentFilter === filter.value)}
             >
               {filter.label}
             </motion.button>
