@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Header from './components/Header'
 import TodoInput from './components/TodoInput'
 import TodoList from './components/TodoList'
+import TodoFilter, { FilterType } from './components/TodoFilter'
 
 function App() {
   const [todos, setTodos] = useState<{ id: number; text: string; completed: boolean }[]>([])
   const [nextId, setNextId] = useState(1)
+  const [filter, setFilter] = useState<FilterType>('all')
 
   const addTodo = (text: string) => {
     setTodos([...todos, { id: nextId, text, completed: false }])
@@ -22,11 +24,22 @@ function App() {
     setTodos(todos.filter(todo => todo.id !== id))
   }
 
+  const filteredTodos = useMemo(() => {
+    if (filter === 'active') {
+      return todos.filter(todo => !todo.completed)
+    }
+    if (filter === 'completed') {
+      return todos.filter(todo => todo.completed)
+    }
+    return todos
+  }, [todos, filter])
+
   return (
     <div className="min-h-screen bg-black text-cyan-400 font-mono p-6">
       <Header />
       <TodoInput onAdd={addTodo} />
-      <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
+      <TodoFilter currentFilter={filter} onFilterChange={setFilter} />
+      <TodoList todos={filteredTodos} onToggle={toggleTodo} onDelete={deleteTodo} />
     </div>
   )
 }
