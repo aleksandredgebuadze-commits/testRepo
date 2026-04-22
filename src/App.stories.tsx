@@ -1,12 +1,21 @@
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import Header from './components/Header'
 import TodoInput from './components/TodoInput'
 import TodoList from './components/TodoList'
 import TodoFilter, { FilterType } from './components/TodoFilter'
 
-function App() {
-  const [todos, setTodos] = useState<{ id: number; text: string; completed: boolean }[]>([])
-  const [nextId, setNextId] = useState(1)
+// Create a wrapper that pre-populates the App with mock todos
+const AppWithMockTodos = () => {
+  // Pre-populated todos with different completion states for demonstrating filtering
+  const [todos, setTodos] = useState<{ id: number; text: string; completed: boolean }[]>([
+    { id: 1, text: 'Initialize the neural interface', completed: true },
+    { id: 2, text: 'Hack the mainframe', completed: false },
+    { id: 3, text: 'Upgrade cybernetic implants', completed: true },
+    { id: 4, text: 'Decrypt the encrypted files', completed: false },
+    { id: 5, text: 'Meet contact at Neon District', completed: false },
+  ])
+  const [nextId, setNextId] = useState(6)
   const [filter, setFilter] = useState<FilterType>('all')
 
   const addTodo = (text: string) => {
@@ -34,4 +43,15 @@ function App() {
   )
 }
 
-export default App
+const meta: Meta<typeof AppWithMockTodos> = {
+  title: 'App',
+  component: AppWithMockTodos,
+  parameters: {
+    layout: 'fullscreen',
+  },
+}
+
+export default meta
+type Story = StoryObj<typeof AppWithMockTodos>
+
+export const Default: Story = {}

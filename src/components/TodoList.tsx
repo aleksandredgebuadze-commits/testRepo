@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { FilterType } from './TodoFilter';
 interface TodoItem {
   id: number;
   text: string;
@@ -10,12 +11,19 @@ interface TodoListProps {
   todos: TodoItem[];
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
+  filter: FilterType;
 }
 
-const TodoList = ({ todos, onToggle, onDelete }: TodoListProps) => {
+const TodoList = ({ todos, onToggle, onDelete, filter }: TodoListProps) => {
+  const filteredTodos = todos.filter(todo => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true;
+  });
+
   return (
     <AnimatePresence>
-      {todos.length === 0 ? (
+      {filteredTodos.length === 0 ? (
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -27,7 +35,7 @@ const TodoList = ({ todos, onToggle, onDelete }: TodoListProps) => {
         </motion.div>
       ) : (
         <div className="space-y-3">
-           {todos.map((todo, index) => (
+           {filteredTodos.map((todo, index) => (
              <motion.div
                key={todo.id}
                initial={{ opacity: 0, x: -20 }}
