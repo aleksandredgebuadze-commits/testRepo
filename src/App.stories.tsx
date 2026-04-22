@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState, useMemo } from "react";
 import Header from "./components/Header";
 import TodoInput from "./components/TodoInput";
@@ -6,11 +7,19 @@ import TodoList from "./components/TodoList";
 
 type FilterType = "all" | "active" | "completed";
 
-function App() {
-  const [todos, setTodos] = useState<
-    { id: number; text: string; completed: boolean }[]
-  >([]);
-  const [nextId, setNextId] = useState(1);
+// Sample data for story demonstration - includes both completed and active todos
+const SAMPLE_TODOS = [
+  { id: 1, text: "Hack the mainframe", completed: true },
+  { id: 2, text: "Install neural implant", completed: false },
+  { id: 3, text: "Meet contact at Afterlife", completed: true },
+  { id: 4, text: "Upgrade cyberdeck firmware", completed: false },
+  { id: 5, text: "Collect bounty from fixer", completed: false },
+];
+
+// Wrapper component that mirrors App but with pre-populated todos for story visualization
+const AppWithInitialTodos = () => {
+  const [todos, setTodos] = useState(SAMPLE_TODOS);
+  const [nextId, setNextId] = useState(6);
   const [filter, setFilter] = useState<FilterType>("all");
 
   const addTodo = (text: string) => {
@@ -54,6 +63,19 @@ function App() {
       />
     </div>
   );
-}
+};
 
-export default App;
+const meta: Meta = {
+  title: "Pages/App",
+  component: AppWithInitialTodos,
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export default meta;
+type Story = StoryObj;
+
+export const Default: Story = {
+  render: () => <AppWithInitialTodos />,
+};
