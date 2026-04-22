@@ -1,7 +1,7 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
-type FilterType = 'all' | 'active' | 'completed';
+export type FilterType = "all" | "active" | "completed";
 
 interface TodoItem {
   id: number;
@@ -17,16 +17,22 @@ interface TodoListProps {
   onFilterChange: (filter: FilterType) => void;
 }
 
-const TodoList = ({ todos, onToggle, onDelete, filter, onFilterChange }: TodoListProps) => {
-  const filters: { value: FilterType; label: string }[] = [
-    { value: 'all', label: 'ALL' },
-    { value: 'active', label: 'ACTIVE' },
-    { value: 'completed', label: 'COMPLETED' },
-  ];
+const FILTER_OPTIONS: { value: FilterType; label: string }[] = [
+  { value: "all", label: "ALL" },
+  { value: "active", label: "ACTIVE" },
+  { value: "completed", label: "COMPLETED" },
+];
 
+const TodoList = ({
+  todos,
+  onToggle,
+  onDelete,
+  filter,
+  onFilterChange,
+}: TodoListProps) => {
   return (
     <>
-      {/* Filter Component */}
+      {/* Filter bar - cyberpunk themed buttons to filter between all/active/completed todos */}
       <motion.div
         id="filterElem"
         initial={{ opacity: 0, y: -10 }}
@@ -46,7 +52,7 @@ const TodoList = ({ todos, onToggle, onDelete, filter, onFilterChange }: TodoLis
         <div className="relative flex items-center gap-3">
           <span className="text-cyan text-sm font-bold">FILTER:</span>
           <div className="flex gap-2">
-            {filters.map(({ value, label }) => (
+            {FILTER_OPTIONS.map(({ value, label }) => (
               <motion.button
                 key={value}
                 onClick={() => onFilterChange(value)}
@@ -54,8 +60,8 @@ const TodoList = ({ todos, onToggle, onDelete, filter, onFilterChange }: TodoLis
                 whileTap={{ scale: 0.95 }}
                 className={`px-4 py-2 border rounded transition-all duration-300 text-xs font-bold ${
                   filter === value
-                    ? 'bg-magenta/30 border-magenta text-magenta shadow-neon-magenta'
-                    : 'bg-cyber-black border-cyan/50 text-cyan hover:border-yellow hover:text-yellow'
+                    ? "bg-magenta/30 border-magenta text-magenta shadow-neon-magenta"
+                    : "bg-cyber-black border-cyan/50 text-cyan hover:border-yellow hover:text-yellow"
                 }`}
               >
                 {label}
@@ -90,8 +96,8 @@ const TodoList = ({ todos, onToggle, onDelete, filter, onFilterChange }: TodoLis
                 transition={{ duration: 0.3, delay: index * 0.1 }}
                 className={`p-4 border rounded-lg transition-all duration-300 slide-up ${
                   todo.completed
-                    ? 'border-green/50 bg-cyber-black'
-                    : 'border-magenta bg-cyber-dark shadow-neon-magenta'
+                    ? "border-green/50 bg-cyber-black"
+                    : "border-magenta bg-cyber-dark shadow-neon-magenta"
                 }`}
               >
                 {/* Decorative corners */}
@@ -108,8 +114,8 @@ const TodoList = ({ todos, onToggle, onDelete, filter, onFilterChange }: TodoLis
                     whileTap={{ scale: 0.9 }}
                     className={`absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 border rounded transition-all duration-300 ${
                       todo.completed
-                        ? 'bg-green border-green shadow-neon'
-                        : 'border-magenta hover:border-yellow'
+                        ? "bg-green border-green shadow-neon"
+                        : "border-magenta hover:border-yellow"
                     }`}
                   >
                     {todo.completed && (
@@ -124,7 +130,9 @@ const TodoList = ({ todos, onToggle, onDelete, filter, onFilterChange }: TodoLis
                   {/* Text */}
                   <span
                     className={`block pl-8 pr-2 py-1 font-mono text-sm transition-all duration-300 ${
-                      todo.completed ? 'text-green/50 line-through decoration-2' : 'text-cyan'
+                      todo.completed
+                        ? "text-green/50 line-through decoration-2"
+                        : "text-cyan"
                     }`}
                   >
                     {todo.text}
@@ -143,8 +151,10 @@ const TodoList = ({ todos, onToggle, onDelete, filter, onFilterChange }: TodoLis
 
                 {/* Status indicator */}
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs">
-                  <span className={todo.completed ? 'text-green' : 'text-magenta'}>
-                    {todo.completed ? '[DONE]' : '[PENDING]'}
+                  <span
+                    className={todo.completed ? "text-green" : "text-magenta"}
+                  >
+                    {todo.completed ? "[DONE]" : "[PENDING]"}
                   </span>
                 </div>
               </motion.div>

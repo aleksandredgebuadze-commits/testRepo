@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import { Trash2 } from 'lucide-react';
+import { motion } from "framer-motion";
+import { Trash2 } from "lucide-react";
 
 interface TodoItemProps {
   todo: {
@@ -19,7 +19,9 @@ const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
       className={`p-4 border rounded-lg transition-all duration-300 ${
-        todo.completed ? 'border-green/50 bg-cyber-black' : 'border-magenta bg-cyber-dark shadow-neon-magenta'
+        todo.completed
+          ? "border-green/50 bg-cyber-black"
+          : "border-magenta bg-cyber-dark shadow-neon-magenta"
       }`}
     >
       {/* Decorative corners */}
@@ -35,18 +37,26 @@ const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
           onClick={() => onToggle(todo.id)}
           whileTap={{ scale: 0.9 }}
           className={`absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 border rounded transition-all duration-300 ${
-            todo.completed ? 'bg-green border-green shadow-neon' : 'border-magenta hover:border-yellow'
+            todo.completed
+              ? "bg-green border-green shadow-neon"
+              : "border-magenta hover:border-yellow"
           }`}
         >
           {todo.completed && (
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-3 h-3 bg-green rounded-sm" />
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="w-3 h-3 bg-green rounded-sm"
+            />
           )}
         </motion.button>
 
         {/* Text */}
         <span
           className={`block pl-10 pr-2 py-1 font-mono text-sm transition-all duration-300 ${
-            todo.completed ? 'text-green/50 line-through decoration-2' : 'text-cyan'
+            todo.completed
+              ? "text-green/50 line-through decoration-2"
+              : "text-cyan"
           }`}
         >
           {todo.text}
@@ -65,8 +75,10 @@ const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
 
       {/* Status indicator */}
       <div className="absolute right-2 top-6 -translate-y-1/2 text-xs">
-        <span className={`mr-1 ${todo.completed ? 'text-green' : 'text-magenta'}`}>
-          {todo.completed ? '[DONE]' : '[PENDING]'}
+        <span
+          className={`mr-1 ${todo.completed ? "text-green" : "text-magenta"}`}
+        >
+          {todo.completed ? "[DONE]" : "[PENDING]"}
         </span>
       </div>
 
@@ -74,7 +86,7 @@ const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
       {!todo.completed && (
         <motion.div
           initial={{ height: 0 }}
-          animate={{ height: '4px' }}
+          animate={{ height: "4px" }}
           className="absolute left-2 right-2 top-[1.5rem] h-[4px] bg-magenta/30 rounded"
         />
       )}

@@ -1,28 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
-import Header from './components/Header';
-import TodoInput from './components/TodoInput';
-import TodoList from './components/TodoList';
-
-type FilterType = 'all' | 'active' | 'completed';
-
-type Todo = {
-  id: number;
-  text: string;
-  completed: boolean;
-};
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
+import Header from "./components/Header";
+import TodoInput from "./components/TodoInput";
+import TodoList from "./components/TodoList";
+import type { FilterType, Todo } from "./App";
 
 interface AppWithTodosProps {
   initialTodos?: Todo[];
 }
 
-// Wrapper component to demonstrate App with pre-populated todos
+/**
+ * Wrapper component for Storybook that renders the App with configurable initial todos.
+ * This allows us to demonstrate different states (empty, with todos) without duplicating App logic.
+ */
 const AppWithTodos = ({ initialTodos = [] }: AppWithTodosProps) => {
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
   const [nextId, setNextId] = useState(
-    initialTodos.length > 0 ? Math.max(...initialTodos.map((todo) => todo.id)) + 1 : 1,
+    initialTodos.length > 0
+      ? Math.max(...initialTodos.map((todo) => todo.id)) + 1
+      : 1,
   );
-  const [filter, setFilter] = useState<FilterType>('all');
+  const [filter, setFilter] = useState<FilterType>("all");
 
   const addTodo = (text: string) => {
     setTodos([...todos, { id: nextId, text, completed: false }]);
@@ -30,7 +28,11 @@ const AppWithTodos = ({ initialTodos = [] }: AppWithTodosProps) => {
   };
 
   const toggleTodo = (id: number) => {
-    setTodos(todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    );
   };
 
   const deleteTodo = (id: number) => {
@@ -38,8 +40,8 @@ const AppWithTodos = ({ initialTodos = [] }: AppWithTodosProps) => {
   };
 
   const filteredTodos = todos.filter((todo) => {
-    if (filter === 'active') return !todo.completed;
-    if (filter === 'completed') return todo.completed;
+    if (filter === "active") return !todo.completed;
+    if (filter === "completed") return todo.completed;
     return true;
   });
 
@@ -59,10 +61,10 @@ const AppWithTodos = ({ initialTodos = [] }: AppWithTodosProps) => {
 };
 
 const meta: Meta<typeof AppWithTodos> = {
-  title: 'Pages/App',
+  title: "Pages/App",
   component: AppWithTodos,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
 };
 
@@ -80,11 +82,11 @@ export const Empty: Story = {
 export const WithTodos: Story = {
   args: {
     initialTodos: [
-      { id: 1, text: 'Hack the mainframe', completed: true },
-      { id: 2, text: 'Install neural implant', completed: false },
-      { id: 3, text: 'Upgrade cyberdeck firmware', completed: true },
-      { id: 4, text: 'Meet with fixer at Afterlife', completed: false },
-      { id: 5, text: 'Decrypt encrypted data shard', completed: false },
+      { id: 1, text: "Hack the mainframe", completed: true },
+      { id: 2, text: "Install neural implant", completed: false },
+      { id: 3, text: "Upgrade cyberdeck firmware", completed: true },
+      { id: 4, text: "Meet with fixer at Afterlife", completed: false },
+      { id: 5, text: "Decrypt encrypted data shard", completed: false },
     ],
   },
 };
