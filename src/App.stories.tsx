@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import Header from "./components/Header";
 import TodoInput from "./components/TodoInput";
@@ -19,9 +20,19 @@ function filterTodos(todos: Todo[], filter: FilterType): Todo[] {
   return todos;
 }
 
-function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [nextId, setNextId] = useState(1);
+/**
+ * App wrapper with pre-populated todos for demonstrating the filter functionality
+ * Uses sample cyberpunk-themed todo items to showcase active/completed states
+ */
+function AppWithTodos() {
+  const [todos, setTodos] = useState<Todo[]>([
+    { id: 1, text: "Hack the mainframe", completed: true },
+    { id: 2, text: "Upload consciousness to the cloud", completed: false },
+    { id: 3, text: "Install cybernetic enhancements", completed: true },
+    { id: 4, text: "Decrypt encrypted data packets", completed: false },
+    { id: 5, text: "Bypass security protocols", completed: false },
+  ]);
+  const [nextId, setNextId] = useState(6);
   const [filter, setFilter] = useState<FilterType>("all");
 
   const addTodo = (text: string) => {
@@ -57,4 +68,15 @@ function App() {
   );
 }
 
-export default App;
+const meta: Meta<typeof AppWithTodos> = {
+  title: "App",
+  component: AppWithTodos,
+  parameters: {
+    layout: "fullscreen",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof AppWithTodos>;
+
+export const Default: Story = {};
